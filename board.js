@@ -1,12 +1,13 @@
 'use strict';
 
-function Board(boardSize) {
+function Board(linesNumber, columnsNumber) {
     this.board = new Array();
-    this.size = boardSize;
+    this.linesNumber = linesNumber;
+    this.columnsNumber = columnsNumber;
 
-    for(var i = 0; i < this.size; i++) {
+    for(var i = 0; i < this.linesNumber; i++) {
         this.board[i] = new Array();
-        for(var j = 0; j < this.size; j++) {
+        for(var j = 0; j < this.columnsNumber; j++) {
             this.board[i][j] = 'O';
         }
     };
@@ -16,8 +17,8 @@ Board.prototype = {
     constructor : Board,
     prettyPrint : function() {
         var line = '';
-        for(var i = 0; i < this.board.length; i++) {
-            for(var j = 0; j < this.board[i].length; j ++) {
+        for(var i = 0; i < this.linesNumber; i++) {
+            for(var j = 0; j < this.columnsNumber; j ++) {
                 line += this.board[i][j] + ' ';
             }
             console.log(line);
@@ -26,6 +27,4 @@ Board.prototype = {
     }
 }
 
-var board = new Board(5);
-board.prettyPrint();
-
+module.exports = Board;
