@@ -1,6 +1,6 @@
 'use strict';
 
-var Battleship = require('./battleship.js');
+var Battleship = require('./Battleship.js');
 
 casper.test.begin('Can populate its board with ships', 1, function suite(test) {
     var myBattleship = new Battleship(2, 4, 2);

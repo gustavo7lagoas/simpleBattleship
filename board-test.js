@@ -1,6 +1,6 @@
 'use strict';
 
-var Board = require('./board.js');
+var Board = require('./Board.js');
 
 casper.test.begin('Can create a board of size 10', 2, function suite(test) {
     var myBoard = new Board(10, 10);
