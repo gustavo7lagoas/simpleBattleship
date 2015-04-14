@@ -1,5 +1,5 @@
 'user strict';
-var Board = require('./board.js');
+var Board = require('./Board.js');
 
 function Battleship(playsNumber, shipsNumber, boardSize) {
     this.playsNumber = playsNumber;
