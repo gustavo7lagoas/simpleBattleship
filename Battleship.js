@@ -1,45 +1,42 @@
 'user strict';
 var Board = require('./Board.js');
-var readline = require('readline');
 
-function Battleship(playsNumber, shipsNumber, boardSize) {
-    this.playsNumber = playsNumber;
+function Battleship(shipsNumber, boardSize) {
     this.shipsNumber = shipsNumber;
     this.board = new Board(boardSize, boardSize);
+    this.linesNumber = this.board.linesNumber;
+    this.columnsNumber = this.board.columnsNumber;
+    this.board = this.board.board;
     this.shipPositions = [];
 };
 
 Battleship.prototype = {
+    constructor : Battleship,
     populateBoard : function() {
         var shipsPlaced = 0;
         while(shipsPlaced !== this.shipsNumber) {
-            linePos = Math.floor(Math.random() * this.board.linesNumber);
-            columnPos = Math.floor(Math.random() * this.board.columnsNumber);
-            if(this.board.board[linePos][columnPos] !== 'x') {
+            linePos = Math.floor(Math.random() * this.linesNumber);
+            columnPos = Math.floor(Math.random() * this.columnsNumber);
+            if(this.board[linePos][columnPos] !== 'x') {
                 var position = new Array;
                 position = [linePos, columnPos];
-                this.board.board[linePos][columnPos] = 'x';
+                this.board[linePos][columnPos] = 'x';
                 shipsPlaced += 1;
                 this.shipPositions.push(position);
             }
         }
     },
-    playerGuess : function() {
-        var guessNumber = 0;
-        var rl = readline.createInterface({
-            input : process.stdin,
-            output : process.stdout
-        });
-        rl.question('Enter guess', function(guess) {
-            console.log('Guess #', guessNumber);
-            guessNumber += 1;
-            rl.close();
-        });
+    isBoatHit : function(guess) {
+        if(this.board[guess[0]][guess[1]] = 'x') {
+            return true;
+        } else {
+            return false;
+        }
     }
 };
 
-var myBattleship = new Battleship(2,4,2);
+var myBattleship = new Battleship(4,2);
 myBattleship.populateBoard();
-myBattleship.playerGuess();
+console.log(myBattleship.isBoatHit([1,1]));
 
 module.exports = Battleship;
