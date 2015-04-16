@@ -8,7 +8,7 @@ function Board(linesNumber, columnsNumber) {
     for(var i = 0; i < this.linesNumber; i++) {
         this.board[i] = new Array();
         for(var j = 0; j < this.columnsNumber; j++) {
-            this.board[i][j] = 'O';
+            this.board[i][j] = '~';
         }
     };
 }
@@ -24,6 +24,9 @@ Board.prototype = {
             console.log(line);
             line = '';
         }
+    },
+    markBoard : function(position, mark) {
+        this.board[position[0]][[position[1]]] = mark;
     }
 }
 
