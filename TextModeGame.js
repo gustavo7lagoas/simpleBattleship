@@ -55,7 +55,7 @@ TextModeGame.prototype = {
     },
     gameOver : function() {
         console.log('You lose!');
-        this.Battleship.markBoats();
+        this.Battleship.markAllNonHitShips();
         this.Battleship.board.prettyPrint();
     },
     isPlayerWin : function() {
