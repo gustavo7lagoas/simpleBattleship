@@ -1,0 +1,28 @@
+{
+  "name": "simpleBattleship",
+  "version": "0.0.1",
+  "description": "A simple single player battleship",
+  "main": "TextModeGame.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gustavo7lagoas/simpleBattleship.git"
+  },
+  "keywords": [
+    "unit",
+    "test",
+    "acceptance",
+    "test"
+  ],
+  "author": "gustavo7lagoas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gustavo7lagoas/simpleBattleship/issues"
+  },
+  "homepage": "https://github.com/gustavo7lagoas/simpleBattleship",
+  "dependencies": {
+    "lodash": "^3.6.0"
+  }
+}
