@@ -1,4 +1,6 @@
+/*jshint node:true*/
 'user strict';
+
 var Board = require('./Board.js');
 var _ = require('lodash');
 
@@ -8,7 +10,7 @@ function Battleship(shipsNumber, boardSize) {
     this.linesNumber = this.board.linesNumber;
     this.columnsNumber = this.board.columnsNumber;
     this.shipPositions = [];
-};
+}
 
 Battleship.prototype = {
     constructor : Battleship,
