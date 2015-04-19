@@ -10,6 +10,7 @@ function Battleship(shipsNumber, boardSize) {
     this.linesNumber = this.board.linesNumber;
     this.columnsNumber = this.board.columnsNumber;
     this.shipPositions = [];
+    this.shipsHit = [];
 }
 
 Battleship.prototype = {
@@ -27,17 +28,27 @@ Battleship.prototype = {
         }
     },
     isBoatHit : function(guess) {
-        if(_.find(this.shipPositions, guess)) {
-            return true;
-        } else {
-            return false;
-        }
+        return _.find(this.shipPositions, guess);
     },
-    markAsHit : function(guess) {
-        this.board.markBoard(guess, '*');
+    markAsHit : function(position) {
+        this.shipsHit.push(position);
+        this.board.markBoard(position, '*');
     },
-    markAsMiss : function(guess) {
-        this.board.markBoard(guess, 'X');
+    markAsMiss : function(position) {
+        this.board.markBoard(position, 'X');
+    },
+    markAsShip : function(position) {
+        this.board.markBoard(position, 'S');
+    },
+    isAllShipsHit : function() {
+        return _.isEqual(this.shipPositions.sort(), this.shipsHit.sort());
+    },
+    markAllNonHitShips : function() {
+        var that = this;
+        _.each(that.shipPositions, function(pos){
+            if(that.board.getPos(pos) === '~')
+                that.markAsShip(pos);
+        });
     }
 };
 
