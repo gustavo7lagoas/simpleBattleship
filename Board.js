@@ -28,6 +28,9 @@ Board.prototype = {
     },
     markBoard : function(position, mark) {
         this.board[position[0]][[position[1]]] = mark;
+    },
+    getPos : function(position) {
+        return this.board[position[0]][[position[1]]];
     }
 };
 
