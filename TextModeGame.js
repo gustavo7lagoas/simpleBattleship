@@ -29,40 +29,60 @@ TextModeGame.prototype = {
         that.Battleship.board.prettyPrint();
         this.rl.question('Enter guess ', function(guess) {
             console.log('Guess # ', guessCount);
-            var formatedGuess = that.formatGuess(guess);
-            console.log(formatedGuess);
-            if(that.Battleship.isBoatHit(formatedGuess)) {
-                that.Battleship.markAsHit(formatedGuess);
-            } else {
-                that.Battleship.markAsMiss(formatedGuess);
-            }
-            if(guessCount === that.playsNumber) {
-                that.gameOver();
-                that.rl.close();
-            } else {
-                if(that.isPlayerWin()) {
-                    that.playerWin();
+            if(that._validateGuess(guess)){
+                var formatedGuess = that._formatGuess(guess);
+                console.log(formatedGuess);
+                if(that.Battleship.isBoatHit(formatedGuess)) {
+                    that.Battleship.markAsHit(formatedGuess);
                 } else {
-                    that.playerGuess(guessCount + 1);
+                    that.Battleship.markAsMiss(formatedGuess);
                 }
+                if(guessCount === that.playsNumber) {
+                    that._playerLose();
+                    that.rl.close();
+                } else {
+                    if(that._isPlayerWin()) {
+                        that._playerWin();
+                    } else {
+                        that.playerGuess(guessCount + 1);
+                    }
+                }
+            } else {
+                console.log('What are you trying to hit?');
+                that.playerGuess(guessCount + 1);
             }
         });
     },
-    formatGuess : function(guess) {
-        return _.map(guess.split(','), function(guessAsString) {
-            return parseInt(guessAsString);
-        });
+    _formatGuess : function(guess) {
+        return {
+            'line' : guess[0],
+            'column' : guess[1]
+        };
     },
-    gameOver : function() {
+    _playerLose : function() {
         console.log('You lose!');
         this.Battleship.markAllNonHitShips();
         this.Battleship.board.prettyPrint();
     },
-    isPlayerWin : function() {
+    _isPlayerWin : function() {
         return this.Battleship.isAllShipsHit();
     },
-    playerWin : function() {
+    _playerWin : function() {
         console.log('You win!');
+    },
+    _validateGuess : function(guess) {
+        if(guess.length === 2 && this._validateGuessCoordinates(guess)) {
+            return true;
+        }
+        return false;
+    },
+    _validateGuessCoordinates : function(guess) {
+        var boardLastLine = String.fromCharCode((this.Battleship.board._firstLine.charCodeAt(0) + this.Battleship.board.columnsNumber) -1);
+        if(guess[0] >= this.Battleship.board._firstLine &&
+           guess[0] <= boardLastLine &&
+           guess[1] > 0 &&
+           guess[1] <= this.Battleship.board.columnsNumber)
+            return true;
     }
 };
 
