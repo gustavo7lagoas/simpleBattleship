@@ -30,10 +30,10 @@ Board.prototype = {
         }
     },
     markBoard : function(position, mark) {
-        this.board[position[0]][[position[1]]] = mark;
+        this.board[position.line][position.column] = mark;
     },
     getPos : function(position) {
-        return this.board[position[0]][[position[1]]];
+        return this.board[position.line][position.column];
     },
     _boardChar : function(character, index) {
         return String.fromCharCode(character.charCodeAt(0) + index);
