@@ -17,11 +17,13 @@ Battleship.prototype = {
     constructor : Battleship,
     populateBoard : function() {
         var shipsPlaced = 0;
-        while(shipsPlaced !== this.shipsNumber) {
-            linePos = Math.floor(Math.random() * this.linesNumber);
-            columnPos = Math.floor(Math.random() * this.columnsNumber);
-            if(!_.find(this.shipPositions, [linePos, columnPos])) {
-                position = [linePos, columnPos];
+        while(shipsPlaced < this.shipsNumber) {
+            posibleShipPosition = {
+                'line' : Math.floor(Math.random() * this.linesNumber),
+                'column' : Math.floor(Math.random() * this.columnsNumber)
+            };
+            if(!_.find(this.shipPositions, posibleShipPosition)) {
+                position = posibleShipPosition;
                 shipsPlaced += 1;
                 this.shipPositions.push(position);
             }
@@ -52,8 +54,10 @@ Battleship.prototype = {
     }
 };
 
+/*
 var myBattleship = new Battleship(4,2);
 myBattleship.populateBoard();
 console.log(myBattleship.isBoatHit([1,1]));
+*/
 
 module.exports = Battleship;
