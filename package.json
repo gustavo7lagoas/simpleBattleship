@@ -24,5 +24,12 @@
   "homepage": "https://github.com/gustavo7lagoas/simpleBattleship",
   "dependencies": {
     "lodash": "^3.6.0"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.4"
+  },
+  "scripts" : {
+      "test": "mocha -R spec ./unitTests/board-test.js"
   }
 }
