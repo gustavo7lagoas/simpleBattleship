@@ -33,7 +33,7 @@ Battleship.prototype = {
         return _.find(this.shipPositions, guess);
     },
     markAsHit : function(position) {
-        this.shipsHit.push(position);
+        this.shipsHit.push({'line':position.line,'column':position.column});
         this.board.markBoard(position, '*');
     },
     markAsMiss : function(position) {

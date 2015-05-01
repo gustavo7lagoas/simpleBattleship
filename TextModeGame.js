@@ -48,7 +48,6 @@ TextModeGame.prototype = {
                     console.log('This size does not exist. Size S chose');
                     boardSize = 2;
             }
-            that.rl.close();
             that.playerGuess(1);
         });
     },
