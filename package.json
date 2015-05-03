@@ -30,6 +30,7 @@
     "mocha": "^2.2.4"
   },
   "scripts" : {
-      "test": "mocha -R spec ./unitTests/board-test.js"
+      "test": "mocha --recursive -R spec ./unitTests/",
+      "test-board" : "mocha -R spec ./unitTests/board-test.js"
   }
 }
