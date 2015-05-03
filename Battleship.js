@@ -30,7 +30,7 @@ Battleship.prototype = {
         }
     },
     isBoatHit : function(guess) {
-        return _.find(this.shipPositions, guess);
+        return _.any(this.shipPositions, _.matches(guess));
     },
     markAsHit : function(position) {
         this.shipsHit.push({'line':position.line,'column':position.column});
