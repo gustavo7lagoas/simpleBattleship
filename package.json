@@ -4,7 +4,8 @@
   "description": "A simple single player battleship",
   "main": "TextModeGame.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive -R spec ./unitTests/",
+    "test-board": "mocha -R spec ./unitTests/board-test.js"
   },
   "repository": {
     "type": "git",
@@ -27,10 +28,7 @@
   },
   "devDependencies": {
     "chai": "^2.3.0",
-    "mocha": "^2.2.4"
-  },
-  "scripts" : {
-      "test": "mocha --recursive -R spec ./unitTests/",
-      "test-board" : "mocha -R spec ./unitTests/board-test.js"
+    "mocha": "^2.2.4",
+    "sinon": "^1.14.1"
   }
 }
