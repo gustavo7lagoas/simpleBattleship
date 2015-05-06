@@ -6,17 +6,16 @@ var readline = require('readline');
 var _ = require('lodash');
 
 function TextModeGame(playsNumber, shipsNumber, boardSize) {
-    this.playsNumber = playsNumber;
-    this.shipsNumber = shipsNumber;
-    this.boardSize = boardSize;
-    this.Battleship = new Battleship(shipsNumber, boardSize);
+    this.playsNumber = playsNumber || 2;
+    this.shipsNumber = shipsNumber || 2;
+    this.boardSize = boardSize || 2;
+    this.Battleship = new Battleship(this.shipsNumber, this.boardSize);
     this.Battleship.populateBoard();
     this.guessNumber = 0;
     this.rl = readline.createInterface({
         input : process.stdin,
         output : process.stdout
     });
-
 }
 
 TextModeGame.prototype = {
@@ -27,7 +26,7 @@ TextModeGame.prototype = {
     _getConfiguration : function() {
         var boardSize, ships, guesses;
         var that = this;
-        that.rl.question('Select sea size: S, M, L, XL, XXL? ', function(seaSize) {
+        that.rl.question('Select sea size: S, M, L, XL? ', function(seaSize) {
             switch (seaSize) {
                 case 'S':
                     boardSize = 2;
@@ -35,20 +34,89 @@ TextModeGame.prototype = {
                 case 'M':
                     boardSize = 3;
                     break;
-                case 'S':
+                case 'L':
                     boardSize = 5;
                     break;
-                case 'S':
+                case 'XL':
                     boardSize = 8;
-                    break;
-                case 'S':
-                    boardSize = 13;
                     break;
                 default:
                     console.log('This size does not exist. Size S chose');
                     boardSize = 2;
             }
-            that.playerGuess(1);
+            that._getDifficulty();
+            //that.playerGuess(1);
+        });
+    },
+    _getDifficulty : function() {
+        var that = this;
+        that.rl.question('Select difficult: Easy(E), Medium(M), Hard(H)', function(difficult) {
+            switch (difficult) {
+                case 'E':
+                    switch (that.boardSize) {
+                        case 2:
+                            that.playsNumber = 3;
+                            that.shipsNumber = 1;
+                            break;
+                        case 3:
+                            that.playsNumber = 7;
+                            that.shipsNumber = 2;
+                            break;
+                        case 5:
+                            that.playsNumber = 22;
+                            that.playsNumber = 5;
+                            break;
+                        case 8:
+                            that.playsNumber = 58;
+                            that.shipsNumber = 10;
+                            break;
+                    }
+                    break;
+                case 'M':
+                    switch (that.boardSize) {
+                        case 2:
+                            that.playsNumber = 3;
+                            that.shipsNumber = 2;
+                            break;
+                        case 3:
+                            that.playsNumber = 7;
+                            that.shipsNumber = 3;
+                            break;
+                        case 5:
+                            that.playsNumber = 20;
+                            that.playsNumber = 5;
+                            break;
+                        case 8:
+                            that.playsNumber = 54;
+                            that.shipsNumber = 14;
+                            break;
+                    }
+                    break;
+                case 'H':
+                    switch (that.boardSize) {
+                        case 2:
+                            that.playsNumber = 3;
+                            that.shipsNumber = 3;
+                            break;
+                        case 3:
+                            that.playsNumber = 5;
+                            that.shipsNumber = 4;
+                            break;
+                        case 5:
+                            that.playsNumber = 13;
+                            that.playsNumber = 10;
+                            break;
+                        case 8:
+                            that.playsNumber = 40;
+                            that.shipsNumber = 25;
+                            break;
+                    }
+                    break;
+                default:
+                    console.log('This difficult does not exist. Easy mode chose');
+                    that.playsNumber = 3;
+                    that.shipsNumber = 1;
+            }
         });
     },
     playerGuess : function(guessCount) {
@@ -114,5 +182,7 @@ TextModeGame.prototype = {
     }
 };
 
-var myTextModeGame = new TextModeGame(2,4,2);
-myTextModeGame.initGame();
+//var myTextModeGame = new TextModeGame(2,4,2);
+//myTextModeGame.initGame();
+
+module.exports = TextModeGame;
