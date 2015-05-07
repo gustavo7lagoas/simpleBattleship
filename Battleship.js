@@ -43,6 +43,7 @@ Battleship.prototype = {
         this.board.markBoard(position, 'S');
     },
     isAllShipsHit : function() {
+        console.log(this.shipPositions.sort());
         return _.isEqual(this.shipPositions.sort(), this.shipsHit.sort());
     },
     markAllNonHitShips : function() {
