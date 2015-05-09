@@ -69,6 +69,7 @@ TextModeGame.prototype = {
                 this.playsNumber = _config[seaSize].levels.E.playsNumber;
                 this.shipsNumber = _config[seaSize].levels.E.shipsNumber;
         }
+        return normalizeddifficultLevel;
     },
     playerGuess : function(guessCount) {
         var that = this;
