@@ -2,6 +2,7 @@
 'use strict';
 
 var Battleship = require('./Battleship');
+var GuessValidator = require('./GuessValidator');
 var readline = require('readline');
 var _ = require('lodash');
 var _config = require('./gameModes.json');
@@ -13,6 +14,7 @@ function TextModeGame(playsNumber, shipsNumber, boardSize) {
     this.Battleship = new Battleship(this.shipsNumber, this.boardSize);
     this.Battleship.populateBoard();
     this.guessNumber = 0;
+    this.GuessValidator = new GuessValidator(this.Battleship);
     this.rl = readline.createInterface({
         input : process.stdin,
         output : process.stdout
@@ -37,6 +39,7 @@ TextModeGame.prototype = {
                     break;
                 default:
                     console.log('This size does not exist. Size S chose');
+                    normalizedSeaSize = 'S';
                     that.boardSize = 2;
             }
             that._getDifficulty(normalizedSeaSize);
@@ -56,13 +59,12 @@ TextModeGame.prototype = {
                     break;
                 default:
                     console.log('This difficult does not exist. Easy mode chose');
+                    normalizedDifficult = 'E';
                     that.playsNumber = _config[seaSize].levels.E.playsNumber;
                     that.shipsNumber = _config[seaSize].levels.E.shipsNumber;
             }
-            console.log(that.playsNumber, that.shipsNumber);
             that.Battleship = new Battleship(that.shipsNumber, that.boardSize);
             that.Battleship.populateBoard();
-            console.log(that.Battleship.shipPositions);
             that.playerGuess(1);
         });
     },
@@ -71,15 +73,11 @@ TextModeGame.prototype = {
         that.Battleship.board.prettyPrint();
         this.rl.question('Enter guess ', function(guess) {
             console.log('Guess # ', guessCount);
-            if(that._validateGuess(guess)){
-                var formatedGuess = that._formatGuess(guess);
+            if(that.GuessValidator.validateGuess(guess)){
+                var formatedGuess = that.GuessValidator.formatGuess(guess);
                 if(that.Battleship.isBoatHit(formatedGuess)) {
-                    console.log(that._isPlayerWin());
-                    if(that._isPlayerWin()) {
-                        that._playerWin();
-                        that.rl.close();
-                    }
                     that.Battleship.markAsHit(formatedGuess);
+
                 } else {
                     that.Battleship.markAsMiss(formatedGuess);
                 }
@@ -90,18 +88,13 @@ TextModeGame.prototype = {
             if(guessCount >= that.playsNumber) {
                 that._playerLose();
                 that.rl.close();
-            } else {
+            } else if(that._isPlayerWin()) {
+                that._playerWin();
+                that.rl.close();
+            }else {
                 that.playerGuess(guessCount + 1);
             }
         });
-    },
-    _formatGuess : function(guess) {
-        var guessLineAsIndex = guess[0].charCodeAt(0) - 'a'.charCodeAt(0);
-        var guessColunmAsIndex = guess[1] -1;
-        return {
-            'line' : guessLineAsIndex,
-            'column' : guessColunmAsIndex
-        };
     },
     _playerLose : function() {
         console.log('You lose!');
@@ -113,20 +106,6 @@ TextModeGame.prototype = {
     },
     _playerWin : function() {
         console.log('You win!');
-    },
-    _validateGuess : function(guess) {
-        if(guess.length === 2 && this._validateGuessCoordinates(guess)) {
-            return true;
-        }
-        return false;
-    },
-    _validateGuessCoordinates : function(guess) {
-        var boardLastLine = String.fromCharCode((this.Battleship.board._firstLine.charCodeAt(0) + this.Battleship.board.columnsNumber) -1);
-        if(guess[0] >= this.Battleship.board._firstLine &&
-           guess[0] <= boardLastLine &&
-           guess[1] > 0 &&
-           guess[1] <= this.Battleship.board.columnsNumber)
-            return true;
     }
 };
 
