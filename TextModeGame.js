@@ -30,47 +30,50 @@ TextModeGame.prototype = {
         var boardSize, ships, guesses;
         var that = this;
         that.rl.question('Select sea size: S, M, L, XL? ', function(seaSize) {
-            var normalizedSeaSize = seaSize.toUpperCase();
-            switch (normalizedSeaSize) {
-                case 'S':
-                case 'M':
-                case 'L':
-                    that.boardSize = _config[normalizedSeaSize].boardSize;
-                    break;
-                default:
-                    console.log('This size does not exist. Size S chose');
-                    normalizedSeaSize = 'S';
-                    that.boardSize = 2;
-            }
-            that._getDifficulty(normalizedSeaSize);
-            //that.playerGuess(1);
+            var normalizedSeaSize = that._setSeaSize(seaSize);
+            that.rl.question('Select difficult: Easy(E), Medium(M), Hard(H)? ', function(difficultLevel) {
+                that._setDifficultyLevel(normalizedSeaSize, difficultLevel);
+                that.Battleship = new Battleship(that.shipsNumber, that.boardSize);
+                that.Battleship.populateBoard();
+                that.playerGuess(1);
+            });
         });
     },
-    _getDifficulty : function(seaSize) {
-        var that = this;
-        that.rl.question('Select difficult: Easy(E), Medium(M), Hard(H)', function(difficult) {
-            var normalizedDifficult = difficult.toUpperCase();
-            switch (normalizedDifficult) {
-                case 'E':
-                case 'M':
-                case 'H':
-                    that.playsNumber = _config[seaSize].levels[normalizedDifficult].playsNumber;
-                    that.shipsNumber = _config[seaSize].levels[normalizedDifficult].shipsNumber;
-                    break;
-                default:
-                    console.log('This difficult does not exist. Easy mode chose');
-                    normalizedDifficult = 'E';
-                    that.playsNumber = _config[seaSize].levels.E.playsNumber;
-                    that.shipsNumber = _config[seaSize].levels.E.shipsNumber;
-            }
-            that.Battleship = new Battleship(that.shipsNumber, that.boardSize);
-            that.Battleship.populateBoard();
-            that.playerGuess(1);
-        });
+    _setSeaSize : function(seaSize) {
+        var normalizedSeaSize = seaSize.toUpperCase();
+        switch (normalizedSeaSize) {
+            case 'S':
+            case 'M':
+            case 'L':
+                this.boardSize = _config[normalizedSeaSize].boardSize;
+                break;
+            default:
+                console.log('This size does not exist. Size S chose');
+                normalizedSeaSize = 'S';
+                this.boardSize = 2;
+        }
+        return normalizedSeaSize;
+    },
+    _setDifficultyLevel : function(seaSize, difficultLevel) {
+        var normalizeddifficultLevel = difficultLevel.toUpperCase();
+        switch (normalizeddifficultLevel) {
+            case 'E':
+            case 'M':
+            case 'H':
+                this.playsNumber = _config[seaSize].levels[normalizeddifficultLevel].playsNumber;
+                this.shipsNumber = _config[seaSize].levels[normalizeddifficultLevel].shipsNumber;
+                break;
+            default:
+                console.log('This difficult does not exist. Easy mode chose');
+                normalizeddifficultLevel = 'E';
+                this.playsNumber = _config[seaSize].levels.E.playsNumber;
+                this.shipsNumber = _config[seaSize].levels.E.shipsNumber;
+        }
     },
     playerGuess : function(guessCount) {
         var that = this;
         that.Battleship.board.prettyPrint();
+        console.log('Guesses remaining ', (this.playsNumber - guessCount +1));
         this.rl.question('Enter guess ', function(guess) {
             console.log('Guess # ', guessCount);
             if(that.GuessValidator.validateGuess(guess)){
