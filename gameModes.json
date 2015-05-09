@@ -1,0 +1,54 @@
+{
+    "S": {
+        "boardSize" : 2,
+        "levels" : {
+            "E" : {
+                "playsNumber" : 3,
+                "shipsNumber" : 1
+            },
+            "M" : {
+                "playsNumber" : 3,
+                "shipsNumber" : 2
+            },
+            "H" : {
+                "playsNumber" : 3,
+                "shipsNumber" : 3
+            }
+        }
+    },
+    "M" : {
+        "boardSize" : 5,
+        "levels" : {
+            "E" : {
+                "playsNumber" : 22,
+                "shipsNumber" : 5
+            },
+            "M" : {
+                "playsNumber" : 20,
+                "shipsNumber" : 8
+            },
+            "H" : {
+                "playsNumber" : 13,
+                "shipsNumber" : 10
+            }
+        }
+    },
+    "L" : {
+        "boardSize" : 8,
+    "levels" : {
+            "E" : {
+                "playsNumber" : 58,
+                "shipsNumber" : 10
+            },
+            "M" : {
+                "playsNumber" : 54,
+                "shipsNumber" : 14
+            },
+            "H" : {
+                "playsNumber" : 30,
+                "shipsNumber" : 20
+            }
+        }
+    }
+}
+
