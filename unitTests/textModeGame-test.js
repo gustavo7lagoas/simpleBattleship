@@ -7,6 +7,14 @@ var _ = require('lodash');
 var sinon = require('sinon');
 
 describe('Text Mode Game', function() {
+    describe('_getConfiguration', function() {
+        it('sets a valid configuration', function() {
+            true.should.be.false;
+        });
+        it('should set lower configuration when invalid configuration is set', function() {
+            true.should.be.false;
+        });
+    });
     describe('isPlayerWin', function() {
         it('checks if battleship function for ships hit is called', function() {
             var myTextModeGame = new TextModeGame();
