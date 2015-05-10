@@ -4,8 +4,7 @@
   "description": "A simple single player battleship",
   "main": "TextModeGame.js",
   "scripts": {
-    "test": "mocha --recursive -R spec ./unitTests/",
-    "test-board": "mocha -R spec ./unitTests/board-test.js"
+    "test" : "mocha --recursive -R spec ./acceptanceTests/"
   },
   "repository": {
     "type": "git",
