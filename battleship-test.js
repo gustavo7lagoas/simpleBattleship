@@ -2,6 +2,7 @@
 'use strict';
 
 var Battleship = require('./Battleship.js');
+var _ = require('lodash');
 
 casper.test.begin('it creates board', 1, function suite(test) {
     var myBattleship = new Battleship(4, 2);
@@ -14,28 +15,37 @@ casper.test.begin('it creates board', 1, function suite(test) {
 casper.test.begin('it populates board with ships', 1, function suite(test) {
     var myBattleship = new Battleship(4, 2);
     myBattleship.populateBoard();
-    var expectShipPositions = [[0,0], [0,1], [1,0], [1,1]];
-    test.assertEquals(myBattleship.shipPositions.sort(), expectShipPositions, 'boards are equally populated');
+    console.log(myBattleship.shipPositions);
+    var expectShipPositions = [
+        {'line':0,'column':0},
+        {'line':0,'column':1},
+        {'line':1,'column':0},
+        {'line':1,'column':1}];
+    test.assertEquals(_.sortByAll(
+        myBattleship.shipPositions,
+        ['line','column'], _.values),
+        expectShipPositions,
+        'boards are equally populated');
     test.done();
 });
 
 casper.test.begin('it checks if guess hit!', 1, function suite(test) {
     var myBattleship = new Battleship(1, 2);
-    myBattleship.shipPositions = [[1,1]];
-    test.assertTruthy(myBattleship.isBoatHit(0,0), 'hits position!');
+    myBattleship.shipPositions = [{'line':1,'column':0},{'line':1,'column':1}];
+    test.assertTruthy(myBattleship.isBoatHit({'line':1,'column':1}), 'hits position!');
     test.done();
 });
 
 casper.test.begin('it checks if guess miss!', 1, function suite(test) {
     var myBattleship = new Battleship(1,2);
-    myBattleship.shipPositions = [[1,1]];
-    test.assertFalsy(myBattleship.isBoatHit([1,0]), 'misses target!');
+    myBattleship.shipPositions = [{'line':1,'column':1}];
+    test.assertFalsy(myBattleship.isBoatHit({'line':1,'column':0}), 'misses target!');
     test.done();
 });
 
 casper.test.begin('it marks as hit!', 1, function suite(test) {
     var myBattleship = new Battleship(1,2);
-    myBattleship.markAsHit([1,1]);
+    myBattleship.markAsHit({'line':1,'column':1});
     var expectBoard = [['~', '~'],['~', '*']];
     test.assertEquals(myBattleship.board.board, expectBoard, 'marked as hit!');
     test.done();
@@ -43,7 +53,7 @@ casper.test.begin('it marks as hit!', 1, function suite(test) {
 
 casper.test.begin('it marks as miss!', 1, function suite(test) {
     var myBattleship = new Battleship(1,2);
-    myBattleship.markAsMiss([1,1]);
+    myBattleship.markAsMiss({'line':1,'column':1});
     var expectBoard = [['~', '~'],['~', 'X']];
     test.assertEquals(myBattleship.board.board, expectBoard, 'marked as hit!');
     test.done();
@@ -51,7 +61,7 @@ casper.test.begin('it marks as miss!', 1, function suite(test) {
 
 casper.test.begin('it marks as ship!', 1, function suite(test) {
     var myBattleship = new Battleship(1,2);
-    myBattleship.markAsShip([1,1]);
+    myBattleship.markAsShip({'line':1,'column':1});
     var expectBoard = [['~', '~'],['~', 'S']];
     test.assertEquals(myBattleship.board.board, expectBoard, 'marked as hit!');
     test.done();
@@ -59,24 +69,24 @@ casper.test.begin('it marks as ship!', 1, function suite(test) {
 
 casper.test.begin('it informs when all boats are hit!', 1, function suite(test) {
     var myBattleship = new Battleship(1,2);
-    myBattleship.shipPositions = [[1,1]];
-    myBattleship.shipsHit = [[1,1]];
+    myBattleship.shipPositions = [{'line':1,'column':0}];
+    myBattleship.shipsHit = [{'line':1,'column':0}];
     test.assertTruthy(myBattleship.isAllShipsHit(), 'all ships hit!');
     test.done();
 });
 
 casper.test.begin('it informs when not all boats are hit!', 1, function suite(test) {
     var myBattleship = new Battleship(1,2);
-    myBattleship.shipPositions = [[1,1]];
-    myBattleship.shipsHit = [[1,0]];
+    myBattleship.shipPositions = [{'line':1,'column':0},{'line':1,'column':1}];
+    myBattleship.shipsHit = [{'line':1,'column':1}];
     test.assertFalsy(myBattleship.isAllShipsHit(), 'NOT all ships hit!');
     test.done();
 });
 
 casper.test.begin('it marks all non hit ships on board!', 1, function suite(test) {
     var myBattleship = new Battleship(1,2);
-    myBattleship.shipPositions = [[0,0], [1,0], [1,1]];
-    myBattleship.markAsHit([1,0]);
+    myBattleship.shipPositions = [{'line':0,'column':0},{'line':1,'column':0},{'line':1,'column':1}];
+    myBattleship.markAsHit({'line':1,'column':0});
     myBattleship.markAllNonHitShips();
     var expectBoard = [['S', '~'],['*', 'S']];
     test.assertEquals(myBattleship.board.board, expectBoard, 'all ships marked!');
