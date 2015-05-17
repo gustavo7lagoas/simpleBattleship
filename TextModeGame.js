@@ -11,10 +11,9 @@ function TextModeGame(playsNumber, shipsNumber, boardSize) {
     this.playsNumber = playsNumber || 2;
     this.shipsNumber = shipsNumber || 2;
     this.boardSize = boardSize || 2;
-    this.Battleship = new Battleship(this.shipsNumber, this.boardSize);
-    this.Battleship.populateBoard();
     this.guessNumber = 0;
-    this.GuessValidator = new GuessValidator(this.Battleship);
+    this.Battleship;
+    this.GuessValidator;
     this.rl = readline.createInterface({
         input : process.stdin,
         output : process.stdout
@@ -34,7 +33,7 @@ TextModeGame.prototype = {
             that.rl.question('Select difficult: Easy(E), Medium(M), Hard(H)? ', function(difficultLevel) {
                 that._setDifficultyLevel(normalizedSeaSize, difficultLevel);
                 that.Battleship = new Battleship(that.shipsNumber, that.boardSize);
-                that.Battleship.populateBoard();
+                that.GuessValidator = new GuessValidator(that.Battleship);
                 that.playerGuess(1);
             });
         });
@@ -77,28 +76,36 @@ TextModeGame.prototype = {
         console.log('Guesses remaining ', (this.playsNumber - guessCount +1));
         this.rl.question('Enter guess ', function(guess) {
             console.log('Guess # ', guessCount);
-            if(that.GuessValidator.validateGuess(guess)){
-                var formatedGuess = that.GuessValidator.formatGuess(guess);
-                if(that.Battleship.isBoatHit(formatedGuess)) {
-                    that.Battleship.markAsHit(formatedGuess);
-
-                } else {
-                    that.Battleship.markAsMiss(formatedGuess);
-                }
+            if(that._isGameOver(guess, guessCount)) {
+                that.rl.close();
             } else {
-                console.log('What are you trying to hit?');
-            }
-            // is Game over?
-            if(guessCount >= that.playsNumber) {
-                that._playerLose();
-                that.rl.close();
-            } else if(that._isPlayerWin()) {
-                that._playerWin();
-                that.rl.close();
-            }else {
                 that.playerGuess(guessCount + 1);
             }
         });
+    },
+    _isGameOver : function(guess, guessCount) {
+        this._processGuess(guess);
+        // is Game over?
+        if(this._isPlayerWin()) {
+            this._playerWin();
+        } else if(guessCount >= this.playsNumber) {
+            this._playerLose();
+        }else {
+            return false;
+        }
+        return true;
+    },
+    _processGuess : function(guess) {
+        if(this.GuessValidator.validateGuess(guess)){
+            var formatedGuess = this.GuessValidator.formatGuess(guess);
+            if(this.Battleship.isBoatHit(formatedGuess)) {
+                this.Battleship.markAsHit(formatedGuess);
+            } else {
+                this.Battleship.markAsMiss(formatedGuess);
+            }
+        } else {
+            console.log('What are you trying to hit?');
+        }
     },
     _playerLose : function() {
         console.log('You lose!');

@@ -22,7 +22,7 @@ GuessValidator.prototype = {
         return false;
     },
     _validateGuessCoordinates : function(guess) {
-        var boardLastLine = String.fromCharCode((this.Battleship.board._firstLine.charCodeAt(0) + this.Battleship.board.columnsNumber) -1);
+        var boardLastLine = String.fromCharCode((this.Battleship.board._firstLine.charCodeAt(0) + this.Battleship.columnsNumber) -1);
         if(guess[0] >= this.Battleship.board._firstLine &&
            guess[0] <= boardLastLine &&
            guess[1] > 0 &&
