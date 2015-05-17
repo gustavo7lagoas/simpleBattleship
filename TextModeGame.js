@@ -33,7 +33,6 @@ TextModeGame.prototype = {
             that.rl.question('Select difficult: Easy(E), Medium(M), Hard(H)? ', function(difficultLevel) {
                 that._setDifficultyLevel(normalizedSeaSize, difficultLevel);
                 that.Battleship = new Battleship(that.shipsNumber, that.boardSize);
-                that.Battleship.populateBoard();
                 that.GuessValidator = new GuessValidator(that.Battleship);
                 that.playerGuess(1);
             });
