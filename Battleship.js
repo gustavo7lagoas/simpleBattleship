@@ -26,6 +26,9 @@ Battleship.prototype = {
                 position = posibleShipPosition;
                 shipsPlaced += 1;
                 this.shipPositions.push(position);
+                console.log(this.shipPositions);
+                console.log(shipsPlaced);
+                console.log(this.shipPositions.length);
             }
         }
     },
