@@ -13,27 +13,36 @@ describe('Text Mode Game', function() {
             myTextModeGame = new TextModeGame();
             myTextModeGame._setSeaSize('S');
             myTextModeGame._setDifficultyLevel('S', 'E');
-            myTextModeGame.Game = new Game(myTextModeGame.playsNumber, myTextModeGame.shipsNumber, myTextModeGame.boardSize);
+            myTextModeGame._startGame(myTextModeGame.playsNumber, myTextModeGame.shipsNumber, myTextModeGame.boardSize);
+            myTextModeGame.playerGuess = function(guessCount, guess) {
+                return myTextModeGame.Game.playerGuess(guess, guessCount);
+            };
+            myTextModeGame.Game.Battleship.shipPositions[0] = {'line' : 0, 'column' :0};
         });
         context('Player Wins', function() {
             it('player wins with the minimal number of plays', function() {
                 myTextModeGame._setDifficultyLevel('S', 'E');
-                console.log("+++++++++++" + myTextModeGame.Game.Battleship.shipPositions);
-                true.should.be.false;
+                var guess = 'a1';
+                var turnResult = myTextModeGame.playerGuess(1, guess);
+                turnResult.gameStatus.should.equal('end');
             });
             it('player wins in the last attempt', function() {
-                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
-                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
-                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
-                true.should.be.false;
+                myTextModeGame._setDifficultyLevel('S', 'E');
+                var guesses = ['a2', 'b1', 'a2'];
+                for(var i = 0; i < 3; i++) {
+                    var turnResult = myTextModeGame.playerGuess(i+1, guesses[i]);
+                }
+                turnResult.gameStatus.should.equal('end');
             });
         });
         context('Player Loses', function() {
             it('no more attempts', function(){
-                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
-                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
-                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
-                true.should.be.false;
+                myTextModeGame._setDifficultyLevel('S', 'E');
+                var guesses = ['a2', 'b1', 'b2'];
+                for(var i = 0; i < 3; i++) {
+                    var turnResult = myTextModeGame.playerGuess(i+1, guesses[i]);
+                }
+                turnResult.gameStatus.should.equal('end');
             });
         });
     });
