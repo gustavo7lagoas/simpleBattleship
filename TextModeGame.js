@@ -30,7 +30,7 @@ TextModeGame.prototype = {
             var normalizedSeaSize = that._setSeaSize(seaSize);
             that.rl.question('Select difficult: Easy(E), Normal(N), Hard(H)? ', function(difficultLevel) {
                 that._setDifficultyLevel(normalizedSeaSize, difficultLevel);
-                that.Game = new Game(that.playsNumber, that.shipsNumber, that.boardSize);
+                that._startGame();
                 that.playerGuess(1);
             });
         });
@@ -66,6 +66,9 @@ TextModeGame.prototype = {
                 this.shipsNumber = _config[seaSize].levels.E.shipsNumber;
         }
         return normalizeddifficultLevel;
+    },
+    _startGame : function() {
+        this.Game = new Game(this.playsNumber, this.shipsNumber, this.boardSize);
     },
     playerGuess : function(guessCount) {
         var that = this;
