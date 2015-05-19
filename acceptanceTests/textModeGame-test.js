@@ -8,7 +8,7 @@ var sinon = require('sinon');
 var myTextModeGame;
 
 describe('Text Mode Game', function() {
-    beforeEach(function() {
+    /*beforeEach(function() {
         myTextModeGame = new TextModeGame();
     });
     describe('Configurations', function() {
@@ -72,23 +72,35 @@ describe('Text Mode Game', function() {
                 myTextModeGame.shipsNumber.should.equal(20);
             });
         });
-    });
+    });*/
     describe('Game Play', function() {
         beforeEach(function() {
             myTextModeGame = new TextModeGame();
             myTextModeGame._setSeaSize('S');
             myTextModeGame._setDifficultyLevel('S', 'E');
+            myTextModeGame.Battleship = new Battleship(myTextModeGame.shipsNumber, myTextModeGame.boardSize);
+            myTextModeGame.GuessValidator = new GuessValidator(myTextModeGame.Battleship);
         });
         context('Player Wins', function() {
             it('player wins with the minimal number of plays', function() {
+                myTextModeGame._setDifficultyLevel('S', 'E');
+                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
+                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
+                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
                 true.should.be.false;
             });
             it('player wins in the last attempt', function() {
+                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
+                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
+                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
                 true.should.be.false;
             });
         });
         context('Player Loses', function() {
             it('no more attempts', function(){
+                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
+                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
+                console.log("+++++++++++" + myTextModeGame.Battleship.shipPositions);
                 true.should.be.false;
             });
         });
