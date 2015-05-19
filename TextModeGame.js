@@ -1,19 +1,17 @@
 /*jshint node:true*/
 'use strict';
 
-var Battleship = require('./Battleship');
-var GuessValidator = require('./GuessValidator');
+var Game = require('./Game');
 var readline = require('readline');
 var _ = require('lodash');
 var _config = require('./gameModes.json');
 
 function TextModeGame(playsNumber, shipsNumber, boardSize) {
-    this.playsNumber = playsNumber || 2;
-    this.shipsNumber = shipsNumber || 2;
-    this.boardSize = boardSize || 2;
+    this.playsNumber = 2;
+    this.shipsNumber = 2;
+    this.boardSize =  2;
     this.guessNumber = 0;
-    this.Battleship;
-    this.GuessValidator;
+    this.Game = {};
     this.rl = readline.createInterface({
         input : process.stdin,
         output : process.stdout
@@ -28,12 +26,11 @@ TextModeGame.prototype = {
     _getConfiguration : function() {
         var boardSize, ships, guesses;
         var that = this;
-        that.rl.question('Select sea size: S, M, L, XL? ', function(seaSize) {
+        that.rl.question('Select sea size: S, M, L? ', function(seaSize) {
             var normalizedSeaSize = that._setSeaSize(seaSize);
-            that.rl.question('Select difficult: Easy(E), Medium(M), Hard(H)? ', function(difficultLevel) {
+            that.rl.question('Select difficult: Easy(E), Normal(N), Hard(H)? ', function(difficultLevel) {
                 that._setDifficultyLevel(normalizedSeaSize, difficultLevel);
-                that.Battleship = new Battleship(that.shipsNumber, that.boardSize);
-                that.GuessValidator = new GuessValidator(that.Battleship);
+                that.Game = new Game(that.playsNumber, that.shipsNumber, that.boardSize);
                 that.playerGuess(1);
             });
         });
@@ -57,7 +54,7 @@ TextModeGame.prototype = {
         var normalizeddifficultLevel = difficultLevel.toUpperCase();
         switch (normalizeddifficultLevel) {
             case 'E':
-            case 'M':
+            case 'N':
             case 'H':
                 this.playsNumber = _config[seaSize].levels[normalizeddifficultLevel].playsNumber;
                 this.shipsNumber = _config[seaSize].levels[normalizeddifficultLevel].shipsNumber;
@@ -72,51 +69,17 @@ TextModeGame.prototype = {
     },
     playerGuess : function(guessCount) {
         var that = this;
-        that.Battleship.board.prettyPrint();
+        that.Game.Battleship.board.prettyPrint();
         console.log('Guesses remaining ', (this.playsNumber - guessCount +1));
         this.rl.question('Enter guess ', function(guess) {
             console.log('Guess # ', guessCount);
-            if(that._isGameOver(guess, guessCount)) {
+            var turnResult = that.Game.playerGuess(guess, guessCount);
+            if(turnResult.gameStatus === 'end') {
                 that.rl.close();
             } else {
-                that.playerGuess(guessCount + 1);
+                that.playerGuess(turnResult.turn);
             }
         });
-    },
-    _isGameOver : function(guess, guessCount) {
-        this._processGuess(guess);
-        // is Game over?
-        if(this._isPlayerWin()) {
-            this._playerWin();
-        } else if(guessCount >= this.playsNumber) {
-            this._playerLose();
-        }else {
-            return false;
-        }
-        return true;
-    },
-    _processGuess : function(guess) {
-        if(this.GuessValidator.validateGuess(guess)){
-            var formatedGuess = this.GuessValidator.formatGuess(guess);
-            if(this.Battleship.isBoatHit(formatedGuess)) {
-                this.Battleship.markAsHit(formatedGuess);
-            } else {
-                this.Battleship.markAsMiss(formatedGuess);
-            }
-        } else {
-            console.log('What are you trying to hit?');
-        }
-    },
-    _playerLose : function() {
-        console.log('You lose!');
-        this.Battleship.markAllNonHitShips();
-        this.Battleship.board.prettyPrint();
-    },
-    _isPlayerWin : function() {
-        return this.Battleship.isAllShipsHit();
-    },
-    _playerWin : function() {
-        console.log('You win!');
     }
 };
 
