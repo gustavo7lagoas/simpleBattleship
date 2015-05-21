@@ -8,13 +8,11 @@ var _ = require('lodash');
 describe('Battleship', function() {
     it('creates board', function() {
         var myBattleship = new Battleship(4, 2);
-        myBattleship.populateBoard();
         var expectedBoard = [['~', '~'],['~', '~']];
         myBattleship.board.board.should.deep.equal(expectedBoard);
     });
     it('populates board with ships', function() {
         var myBattleship = new Battleship(4, 2);
-        myBattleship.populateBoard();
         var expectShipPositions = [
             {'line':0,'column':0},
             {'line':0,'column':1},

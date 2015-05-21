@@ -11,6 +11,7 @@ function Battleship(shipsNumber, boardSize) {
     this.columnsNumber = this.board.columnsNumber;
     this.shipPositions = [];
     this.shipsHit = [];
+    this.populateBoard();
 }
 
 Battleship.prototype = {
