@@ -86,8 +86,8 @@ TextModeGame.prototype = {
     }
 };
 
-//var myTextModeGame = new TextModeGame();
-//myTextModeGame.initGame();
+var myTextModeGame = new TextModeGame();
+myTextModeGame.initGame();
 
 module.exports = TextModeGame;
 

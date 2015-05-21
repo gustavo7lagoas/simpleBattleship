@@ -4,6 +4,7 @@
 var Game = require('./Game');
 var _ = require('lodash');
 var _config = require('./gameModes.json');
+var Ui = require('./Ui');
 
 function WebModeGame(seaSize, difficultyLevel) {
     this.seaSize = seaSize;
@@ -13,12 +14,14 @@ function WebModeGame(seaSize, difficultyLevel) {
     this.boardSize =  2;
     this.guessNumber = 0;
     this.Game = {};
+    this.ui = new Ui();
 }
 
 WebModeGame.prototype = {
     constructor : WebModeGame,
     initGame : function() {
         this._getConfiguration(this.seaSize, this.difficultyLevel);
+        this.ui.render(this.boardSize);
     },
     _getConfiguration : function() {
         this._setDifficultyLevel(this._setSeaSize(this.seaSize), this.difficultyLevel);
