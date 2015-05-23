@@ -25,6 +25,7 @@
         height: 30px;
     }
     .column {
+        cursor: pointer;
         border: 1px solid;
         width: 30px;
         height: 28px;
@@ -98,6 +99,7 @@
 <script type="text/javascript" src="jquery-1.11.2.min.js"></script>
 <script>
     var myGame;
+    var guessCount = 1;
     myGame = new WebGame('L', 'E');
     myGame.initGame();
     $('#start').click(function(event) {
@@ -106,7 +108,17 @@
         var difficultyLevel = $('input[name="difficulty-level"]:checked').val();
         myGame = new WebGame(seaSize, difficultyLevel);
         myGame.initGame();
-    })
+    });
+    $('.column').click(function() {
+        console.log($(this).attr('id'));
+        var turnResult = myGame.playerGuess($(this).attr('id'), guessCount);
+        if(turnResult.gameStatus === 'end') {
+            alert("The game is over");
+        } else {
+            guessCount += 1;
+            console.log(guessCount);
+        }
+    });
 </script>
 </body>
 </html>
