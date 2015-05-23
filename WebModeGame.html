@@ -60,18 +60,18 @@
         <form>
             <div>
                 <label for="sea-size">Sea Size</label>
-                <input type="radio" name="sea-size">Small</input>
-                <input type="radio" name="sea-size">Mid-size</input>
-                <input type="radio" name="sea-size">Large</input>
+                <input type="radio" name="sea-size" value="S">Small</input>
+                <input type="radio" name="sea-size" value="M">Mid-size</input>
+                <input type="radio" name="sea-size" value="L">Large</input>
             </div>
             <div>
                 <label for="difficulty-level">Difficulty Level</label>
-                <input type="radio" name="difficulty-level">Easy</input>
-                <input type="radio" name="difficulty-level">Normal</input>
-                <input type="radio" name="difficulty-level">Hard</input>
+                <input type="radio" name="difficulty-level" value="E">Easy</input>
+                <input type="radio" name="difficulty-level" value="N">Normal</input>
+                <input type="radio" name="difficulty-level" value="H">Hard</input>
             </div>
             <div>
-                <button>Start Game!</button>
+                <button id='start'>Start Game!</button>
             </div>
         </form>
     </div>
@@ -80,5 +80,19 @@
         <p>Learn full-stack testing with Javascript</p>
     </div>
 </div>
+<script src='./bundle.js'></script>
+<script type="text/javascript" src="jquery-1.11.2.min.js"></script>
+<script>
+    var myGame;
+    $('#start').click(function(event) {
+        event.preventDefault();
+        var seaSize = $('input[name="sea-size"]:checked').val();
+        var difficultyLevel = $('input[name="difficulty-level"]:checked').val();
+        console.log($('input[name="sea-size"]:checked').val());
+        console.log($('input[name="difficulty-level"]:checked').val());
+        myGame = new WebGame(seaSize, difficultyLevel);
+        myGame.initGame();
+    })
+</script>
 </body>
 </html>
