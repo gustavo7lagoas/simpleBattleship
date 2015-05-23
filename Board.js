@@ -44,6 +44,9 @@ Board.prototype = {
             firstLine += i + 1 + ' ';
         }
         return firstLine;
+    },
+    boardLine : function(line) {
+        return this._boardChar(this._firstLine, line);
     }
 };
 

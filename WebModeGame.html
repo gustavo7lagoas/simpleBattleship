@@ -17,6 +17,20 @@
         width:600px;
         margin:0 auto;
     }
+    #gamebox {
+        padding-top: 20px;
+    }
+    .row {
+        margin: auto;
+        height: 30px;
+    }
+    .column {
+        border: 1px solid;
+        width: 30px;
+        height: 28px;
+        float: left;
+        text-align: center;
+    }
     #container {
         background-color: #aaa;
     }
@@ -84,12 +98,12 @@
 <script type="text/javascript" src="jquery-1.11.2.min.js"></script>
 <script>
     var myGame;
+    myGame = new WebGame('L', 'E');
+    myGame.initGame();
     $('#start').click(function(event) {
         event.preventDefault();
         var seaSize = $('input[name="sea-size"]:checked').val();
         var difficultyLevel = $('input[name="difficulty-level"]:checked').val();
-        console.log($('input[name="sea-size"]:checked').val());
-        console.log($('input[name="difficulty-level"]:checked').val());
         myGame = new WebGame(seaSize, difficultyLevel);
         myGame.initGame();
     })

@@ -4,7 +4,8 @@
   "description": "A simple single player battleship",
   "main": "TextModeGame.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-js": "browserify WebModeGame.js --standalone WebGame -o bundle.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   },
   "homepage": "https://github.com/gustavo7lagoas/simpleBattleship",
   "dependencies": {
+    "browserify": "^10.2.1",
     "lodash": "^3.6.0"
   }
 }
