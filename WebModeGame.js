@@ -21,7 +21,8 @@ WebModeGame.prototype = {
     constructor : WebModeGame,
     initGame : function() {
         this._getConfiguration(this.seaSize, this.difficultyLevel);
-        this.ui.render(this.boardSize);
+        this._startGame();
+        this.ui.render(this.Game.Battleship.board);
     },
     _getConfiguration : function() {
         this._setDifficultyLevel(this._setSeaSize(this.seaSize), this.difficultyLevel);
@@ -67,11 +68,9 @@ WebModeGame.prototype = {
         console.log('Guesses remaining ', (this.playsNumber - guessCount +1));
         console.log('Guess # ', guessCount);
         var turnResult = this.Game.playerGuess(guess, guessCount);
-        if(turnResult.gameStatus === 'end') {
-            console.log('Game Over!');
-        } else {
-            this.playerGuess(turnResult.turn);
-        }
+        console.log(turnResult.gameStatus);
+        this.ui.render(this.Game.Battleship.board);
+        return turnResult;
     }
 };
 
