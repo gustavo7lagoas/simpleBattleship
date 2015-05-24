@@ -5,7 +5,8 @@
   "main": "TextModeGame.js",
   "scripts": {
     "test": "mocha --recursive -R spec ./unitTests/",
-    "test-board": "mocha -R spec ./unitTests/board-test.js"
+    "test-board": "mocha -R spec ./unitTests/board-test.js",
+    "build-js": "browserify WebModeGame.js --standalone WebGame -o bundle.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/gustavo7lagoas/simpleBattleship",
   "dependencies": {
+    "browserify": "^10.2.1",
     "lodash": "^3.6.0"
   },
   "devDependencies": {
