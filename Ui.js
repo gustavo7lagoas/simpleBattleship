@@ -4,15 +4,11 @@
 
 function Ui() {
     this.frame = $('#game-box');
-    this.rendered = false;
 }
 
 Ui.prototype = {
     render : function(board) {
-        if(this.rendered) {
-            console.log('Aqui');
-            this.frame.empty();
-        }
+        this.frame.empty();
         for(var i = 0; i < board.linesNumber; i++) {
             var row = $("<div>", { class: "row", id : board.boardLine(i)});
             for(var j = 0; j < board.columnsNumber; j++) {
@@ -20,7 +16,6 @@ Ui.prototype = {
                            .html(board.board[i][j]));
             }
             this.frame.append(row);
-            this.rendered = true;
         }
     }
 };
