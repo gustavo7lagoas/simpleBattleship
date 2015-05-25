@@ -4,14 +4,31 @@
 
 debugger;
 
-casper.test.begin('Teste', 1, function battleship(test){
+var gamepath = 'http://localhost:8080/WebModeGame.html';
 
-    var gamepath = 'http://localhost:8080/WebModeGame.html';
-    console.log(gamepath);
+casper.test.begin('Teste', 1, function battleship(test){
 
 	casper.start(gamepath, function(){
 		test.assertTitle("Example Domain", "Battleship title is the one expected");
 	});
+
+	casper.run(function() {
+        test.done();
+    });
+});
+
+casper.test.begin('Start Game', 1, function battleship(test){
+
+	casper.start(gamepath, function(){
+        this.fill('form', {
+            'sea-size' : 'L',
+            'difficulty-level' : 'N'
+        }, true);
+	});
+
+    casper.then(function() {
+        test.assertExists('.column', 'Did not create any Board Column');
+    });
 
 	casper.run(function() {
         test.done();
