@@ -2,38 +2,31 @@
 'use strict';
 
 var Game = require('./Game');
-var readline = require('readline');
 var _ = require('lodash');
 var _config = require('./gameModes.json');
+var Ui = require('./Ui');
 
-function TextModeGame(playsNumber, shipsNumber, boardSize) {
+function WebModeGame(seaSize, difficultyLevel) {
+    this.seaSize = seaSize;
+    this.difficultyLevel = difficultyLevel;
     this.playsNumber = 2;
     this.shipsNumber = 2;
     this.boardSize =  2;
     this.guessNumber = 0;
     this.Game = {};
-    this.rl = readline.createInterface({
-        input : process.stdin,
-        output : process.stdout
-    });
+    this.ui = new Ui();
 }
 
-TextModeGame.prototype = {
-    constructor : TextModeGame,
+WebModeGame.prototype = {
+    constructor : WebModeGame,
     initGame : function() {
-        this._getConfiguration();
+        this._getConfiguration(this.seaSize, this.difficultyLevel);
+        this._startGame();
+        this.ui.render(this.Game.Battleship.board);
     },
     _getConfiguration : function() {
-        var boardSize, ships, guesses;
-        var that = this;
-        that.rl.question('Select sea size: S, M, L? ', function(seaSize) {
-            var normalizedSeaSize = that._setSeaSize(seaSize);
-            that.rl.question('Select difficult: Easy(E), Normal(N), Hard(H)? ', function(difficultLevel) {
-                that._setDifficultyLevel(normalizedSeaSize, difficultLevel);
-                that._startGame();
-                that.playerGuess(1);
-            });
-        });
+        this._setDifficultyLevel(this._setSeaSize(this.seaSize), this.difficultyLevel);
+        this.Game = new Game(this.playsNumber, this.shipsNumber, this.boardSize);
     },
     _setSeaSize : function(seaSize) {
         var normalizedSeaSize = seaSize.toUpperCase();
@@ -70,24 +63,19 @@ TextModeGame.prototype = {
     _startGame : function() {
         this.Game = new Game(this.playsNumber, this.shipsNumber, this.boardSize);
     },
-    playerGuess : function(guessCount) {
-        var that = this;
-        that.Game.Battleship.board.prettyPrint();
+    playerGuess : function(guess, guessCount) {
+        this.Game.Battleship.board.prettyPrint();
         console.log('Guesses remaining ', (this.playsNumber - guessCount +1));
-        this.rl.question('Enter guess ', function(guess) {
-            console.log('Guess # ', guessCount);
-            var turnResult = that.Game.playerGuess(guess, guessCount);
-            if(turnResult.gameStatus === 'end') {
-                that.rl.close();
-            } else {
-                that.playerGuess(turnResult.turn);
-            }
-        });
+        console.log('Guess # ', guessCount);
+        var turnResult = this.Game.playerGuess(guess, guessCount);
+        console.log(turnResult.gameStatus);
+        this.ui.render(this.Game.Battleship.board);
+        return turnResult;
     }
 };
 
-var myTextModeGame = new TextModeGame();
-myTextModeGame.initGame();
+//var myWebModeGame = new WebModeGame();
+//myWebModeGame.initGame();
 
-module.exports = TextModeGame;
+module.exports = WebModeGame;
 

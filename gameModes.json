@@ -6,7 +6,7 @@
                 "playsNumber" : 3,
                 "shipsNumber" : 1
             },
-            "M" : {
+            "N" : {
                 "playsNumber" : 3,
                 "shipsNumber" : 2
             },
@@ -23,7 +23,7 @@
                 "playsNumber" : 22,
                 "shipsNumber" : 5
             },
-            "M" : {
+            "N" : {
                 "playsNumber" : 20,
                 "shipsNumber" : 8
             },
@@ -40,7 +40,7 @@
                 "playsNumber" : 58,
                 "shipsNumber" : 10
             },
-            "M" : {
+            "N" : {
                 "playsNumber" : 54,
                 "shipsNumber" : 14
             },

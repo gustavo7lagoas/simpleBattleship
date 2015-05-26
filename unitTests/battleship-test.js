@@ -1,7 +1,7 @@
 /*jshint node:true*/
 'use strict';
 
-var should = require('chai').should;
+var should = require('chai').should();
 var Battleship = require('../Battleship.js');
 var _ = require('lodash');
 
